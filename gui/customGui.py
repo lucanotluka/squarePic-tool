@@ -31,7 +31,7 @@ class CustomGui:
             folder = Util.get_folder(gui)
 
             if not folder:
-                gui.popup_error(f'Seleziona una cartella corretta.')
+                gui.popup_error(f'Non hai selezionato alcuna cartella', no_titlebar = True, auto_close=True, auto_close_duration=1)
 
             else:
                 
@@ -41,7 +41,7 @@ class CustomGui:
                     try:
                         Util.convert_image(rawImage)
                     except OSError:
-                        gui.popup_error(f'Impossibile aprire un file, controllare la cartella.')
-
-                if gui.popup_yes_no('Conversione terminata. Vuoi terminare ed uscire?', no_titlebar = True) == "Yes":
-                    break
+                        gui.popup_error(f'Impossibile aprire un file, controllare la cartella.', auto_close=True, auto_close_duration=1)
+            
+            if gui.popup_yes_no('Vuoi terminare ed uscire?', no_titlebar = True) == "Yes":
+                break
