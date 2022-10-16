@@ -30,6 +30,7 @@ class CustomGui:
 
             folder = Util.get_folder(gui)
 
+
             if not folder:
                 gui.popup_error(f'Non hai selezionato alcuna cartella', no_titlebar = True, auto_close=True, auto_close_duration=1)
 

@@ -35,9 +35,12 @@ class Util:
             image = image.convert('RGB')                   # every image now has RGB mode. operation needed for troubleshoot a .jpeg opening error bug
             image = ImageOps.exif_transpose(image)         # operation that saves the rotation flag of the original pic into Image object
 
-            image = PrivateUtil.set_orientation(image)
+            
 
-            PrivateUtil.save_edit(rawImage, image)
+            PrivateUtil.save_edit(rawImage, image, flag = 1)
+
+            image = PrivateUtil.set_orientation(image)
+            PrivateUtil.save_edit(rawImage, image, flag = 0)
 
 
         except OSError:
@@ -67,12 +70,15 @@ class PrivateUtil:
     # PARAMS: rawImage, the image to save
     #         image, the image to save
     # RETURN: None
-    def save_edit(rawImage: str, image: Image) -> None:
+    def save_edit(rawImage: str, image: Image, flag: bool) -> None:
 
         try:
-            fileName = os.path.splitext(rawImage)[0]   
-            image.save(fileName + '_Edit.jpg')
-            image.close()
+            fileName, ext = os.path.splitext(rawImage)
+            if flag:  
+                image.save(fileName + '.jpg')
+            else:
+                image.save(fileName + "sqrd.jpg")
+                image.close()
         
         except OSError:
             raise OSError
