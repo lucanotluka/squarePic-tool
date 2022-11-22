@@ -30,14 +30,11 @@ class CustomGui:
 
             folder = Util.get_folder(gui)
 
-
             if not folder:
                 gui.popup_error(f'Non hai selezionato alcuna cartella', no_titlebar = True, auto_close=True, auto_close_duration=1)
 
             else:
-                
                 images = [image for image in Path(folder).iterdir() if image.is_file()]
-
                 for rawImage in images:
                     try:
                         Util.convert_image(rawImage)

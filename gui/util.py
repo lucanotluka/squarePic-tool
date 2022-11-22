@@ -26,8 +26,9 @@ class Util:
 
     # DESC: convert the image
     # PARAMS: rawImage, the image to convert
+    #         isSquared,flag to know how work on the image
     # RETURN: None
-    def convert_image(rawImage: str) -> None:
+    def convert_image(rawImage: str, isSquared: bool) -> None:
 
         try:
 
@@ -35,13 +36,10 @@ class Util:
             image = image.convert('RGB')                   # every image now has RGB mode. operation needed for troubleshoot a .jpeg opening error bug
             image = ImageOps.exif_transpose(image)         # operation that saves the rotation flag of the original pic into Image object
 
-            
+            if isSquared:
+                image = PrivateUtil.set_orientation(image)
 
-            PrivateUtil.save_edit(rawImage, image, flag = 1)
-
-            image = PrivateUtil.set_orientation(image)
-            PrivateUtil.save_edit(rawImage, image, flag = 0)
-
+            PrivateUtil.save_edit(rawImage, image, isSquared)
 
         except OSError:
             raise OSError
@@ -69,16 +67,17 @@ class PrivateUtil:
     # DESC: save the edited image
     # PARAMS: rawImage, the image to save
     #         image, the image to save
+    #         isSquared, flag to set how is the saving of the picture
     # RETURN: None
-    def save_edit(rawImage: str, image: Image, flag: bool) -> None:
+    def save_edit(rawImage: str, image: Image, isSquared: bool) -> None:
 
         try:
             fileName, ext = os.path.splitext(rawImage)
-            if flag:  
-                image.save(fileName + '.jpg')
-            else:
+            if isSquared:
                 image.save(fileName + "sqrd.jpg")
-                image.close()
+            else:
+                image.save(fileName + ".jpg")
+            image.close()
         
         except OSError:
             raise OSError
